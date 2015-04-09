@@ -13,4 +13,20 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require bootstrap
+//
+//= require api
+//= require offers
+//= require_self
+//
+
+
+$(document).on('ready page:load', function() {
+    Turbolinks.enableProgressBar();
+
+    $.api.controller     = this.body.id;
+    $.api.action         = this.body.attributes['data-action'].value;
+
+    if ( typeof $.api[ $.camelCase($.api.controller) ] === 'object' ) $.api[ $.camelCase($.api.controller) ].init();
+});
+

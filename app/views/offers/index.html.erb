@@ -1,0 +1,24 @@
+<%= page_header %>
+
+<%= simple_form_for :offer, remote: true, html: { id: 'offers-form', class: 'form form-horizontal' } do |form| %>
+  <%= form.input :uid %>
+  <%= form.input :pub0 %>
+  <%= form.input :page %>
+
+  <div class='form-group'>
+    <div class='col-sm-offset-3 col-sm-9'>
+      <%= form.button :submit, t('common.submit'), data: { disable_with: t('common.please_wait') } %>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+
+<div id='offers-container'>
+  <div id='offers'>
+  </div>
+
+  <div id='no-offers-placeholder'>
+    <h3> <%= t '.no_results' %> </h3>
+  </div>
+</div>
