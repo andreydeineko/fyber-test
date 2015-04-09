@@ -1,5 +1,5 @@
 class FyberOffersRequest
-  DEFAULT_API_HEADERS  =  { :accept => :json, :content_type => :json }
+  DEFAULT_API_HEADERS  =  { accept: :json, content_type: :json }
 
   MANDATORY_ATTRIBUTES = [ :uid, :pub0, :page ]
   API_CONFIGURATION    = Rails.application.secrets[:fyber].symbolize_keys
@@ -38,7 +38,7 @@ class FyberOffersRequest
   end
 
   def api_offers_endpoint
-    URI.join(API_CONFIGURATION[:api_host], "offers.#{API_CONFIGURATION[:format]}").to_s
+    URI.join(API_CONFIGURATION[:api_host], "offers.#{API_CONFIGURATION[:format]}").to_s # => "http://api.sponsorpay.com/feed/v1/offers.json"
   end
 
   def payload_with_hashkey
