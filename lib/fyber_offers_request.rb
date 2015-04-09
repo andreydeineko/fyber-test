@@ -17,14 +17,17 @@ class FyberOffersRequest
     @request = fyber_offers_request
   end
 
-  def offers
+   def offers
     @offers ||= begin
                   response = execute
-                  response['offers']
+                  error_explained = 'The response X-Sponsorpay-Response-Signature header is not correct'
+                  result = allow_response? ? response['offers'] : error_explained
+                  result
                 rescue Exception => exception
                   { error: exception.message }
                 end
   end
+
 
   private
 
@@ -33,8 +36,12 @@ class FyberOffersRequest
                             headers: DEFAULT_API_HEADERS)
   end
 
+  def response_body
+    @_response_body ||= @request.execute
+  end
+
   def execute
-    @_response ||= JSON.parse(@request.execute)
+    @_response ||= JSON.parse(response_body)
   end
 
   def api_offers_endpoint
@@ -51,6 +58,13 @@ class FyberOffersRequest
 
   def hashkey(payload)
     Digest::SHA1.hexdigest(payload.except(:api_key).sort.map { |key, value| "#{key}=#{value}" }.join("&") + "&#{API_CONFIGURATION[:api_key]}")
+  end
+
+  def allow_response?
+    response_body_with_api_key = response_body + API_CONFIGURATION[:api_key]
+    @_header_hash = Digest::SHA1.hexdigest(response_body_with_api_key)
+    @_allow = response_body.headers[:x_sponsorpay_response_signature] == @_header_hash
+    @_allow
   end
 
   def mandatory_attributes_list

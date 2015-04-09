@@ -7,6 +7,7 @@ require "action_controller/railtie"
 # require "action_mailer/railtie"
 require "action_view/railtie"
 require "sprockets/railtie"
+require "rails/test_unit/railtie"
 
 
 # Require the gems listed in Gemfile, including any gems
@@ -28,7 +29,7 @@ module Fyber
     # config.i18n.default_locale = :de
 
     config.generators.view_specs       = false
-    config.generators.controller_specs = false
+    # config.generators.controller_specs = false
     config.generators.helper_specs     = false
   end
 end
